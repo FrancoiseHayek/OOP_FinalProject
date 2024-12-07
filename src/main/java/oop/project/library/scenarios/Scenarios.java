@@ -1,6 +1,12 @@
 package oop.project.library.scenarios;
 
+import oop.project.library.lexer.Lexer;
+import oop.project.library.parser.*;
+
+import java.util.HashMap;
 import java.util.Map;
+
+import static oop.project.library.parser.Parser.useParser;
 
 public class Scenarios {
 
@@ -27,24 +33,59 @@ public class Scenarios {
     }
 
     private static Result<Map<String, Object>> lex(String arguments) {
-        //Note: For ease of testing, this should use your Lexer implementation
-        //directly rather and return those values.
-        throw new UnsupportedOperationException("TODO"); //TODO
+
+        try {
+            Lexer lexer = new Lexer(arguments);
+            var lexedArgs = lexer.lex();
+            return new Result.Success<>(new HashMap<>(lexedArgs));
+        } catch (UnsupportedOperationException e) {
+            return new Result.Failure<>(e.toString());
+        }
     }
 
     private static Result<Map<String, Object>> add(String arguments) {
-        //Note: For this part of the project, we're focused on lexing/parsing.
-        //The implementation of these scenarios isn't going to look like a full
-        //command, but rather some weird hodge-podge mix. For example:
-        //var args = Lexer.parse(arguments);
-        //var left = IntegerParser.parse(args.positional[0]);
-        //This is fine - our goal right now is to implement this functionality
-        //so we can build up the actual command system in Part 3.
-        throw new UnsupportedOperationException("TODO"); //TODO
+
+        try {
+            Lexer lexer = new Lexer(arguments);
+            var lexedArgs = lexer.lex();
+
+            if (lexedArgs.size() != 2) {
+                throw new ParseException("Invalid number of arguments, should be 2 but found: " + lexedArgs.size());
+            }
+
+            Map<String, Integer> parsedArgs = new HashMap<>();
+            Parser<Integer> parser = new IntegerParser();
+            parsedArgs.put("left", parser.parse(lexedArgs.get("0")));
+            parsedArgs.put("right", parser.parse(lexedArgs.get("1")));
+
+            return new Result.Success<>(new HashMap<>(parsedArgs));
+
+        } catch (ParseException | java.text.ParseException e) {
+            return new Result.Failure<>(e.toString());
+        }
     }
 
     private static Result<Map<String, Object>> sub(String arguments) {
-        throw new UnsupportedOperationException("TODO"); //TODO
+
+        try {
+            Lexer lexer = new Lexer(arguments);
+            var lexedArgs = lexer.lex();
+
+            if (lexedArgs.size() != 2) {
+                throw new ParseException("Invalid number of arguments, should be 2 but found: " + lexedArgs.size());
+            }
+
+            Map<String, Double> parsedArgs = new HashMap<>();
+            Parser<Double> parser = new DoubleParser();
+
+            parsedArgs.put("left", parser.parse(lexedArgs.get("left")));
+            parsedArgs.put("right", parser.parse(lexedArgs.get("right")));
+
+            return new Result.Success<>(new HashMap<>(parsedArgs));
+
+        } catch (ParseException | java.text.ParseException e) {
+            return new Result.Failure<>(e.toString());
+        }
     }
 
     private static Result<Map<String, Object>> fizzbuzz(String arguments) {
@@ -54,23 +95,146 @@ public class Scenarios {
         //the validation involved even if it's not in the library yet.
         //var number = IntegerParser.parse(lexedArguments.get("number"));
         //if (number < 1 || number > 100) ...
-        throw new UnsupportedOperationException("TODO"); //TODO
+
+        try {
+            Lexer lexer = new Lexer(arguments);
+            var lexedArgs = lexer.lex();
+
+            if (lexedArgs.size() != 1) {
+                throw new ParseException("Invalid number of arguments, should be 1 but found: " + lexedArgs.size());
+            }
+
+            Map<String, Integer> parsedArgs = new HashMap<>();
+            Parser<Integer> parser = new IntegerParser();
+
+            parsedArgs.put("number", parser.parse(lexedArgs.get("0")));
+
+            var number = parsedArgs.get("number");
+            if (number < 1 || number > 100) {
+                throw new ParseException("Number must be between 1 and 100 (inclusive) but found: " + number);
+            }
+
+            return new Result.Success<>(new HashMap<>(parsedArgs));
+
+        } catch (ParseException | java.text.ParseException e) {
+            return new Result.Failure<>(e.toString());
+        }
     }
 
     private static Result<Map<String, Object>> difficulty(String arguments) {
-        throw new UnsupportedOperationException("TODO"); //TODO
+
+        try {
+            Lexer lexer = new Lexer(arguments);
+            var lexedArgs = lexer.lex();
+
+            if (lexedArgs.size() != 1) {
+                throw new ParseException("Invalid number of arguments, should be 1 but found: " + lexedArgs.size());
+            }
+
+            Map<String, String> parsedArgs = new HashMap<>();
+            Parser<String> parser = new StringParser();
+
+            parsedArgs.put("difficulty", parser.parse(lexedArgs.get("0")));
+
+            String difficulty = parsedArgs.get("difficulty");
+
+            return switch (difficulty) {
+                case "easy", "normal", "hard", "peaceful" -> new Result.Success<>(new HashMap<>(parsedArgs));
+                default -> throw new ParseException("Invalid difficulty: " + difficulty);
+            };
+
+        } catch (ParseException | java.text.ParseException e) {
+            return new Result.Failure<>(e.toString());
+        }
     }
 
     private static Result<Map<String, Object>> echo(String arguments) {
-        throw new UnsupportedOperationException("TODO"); //TODO
+
+        try {
+            Lexer lexer = new Lexer(arguments);
+            var lexedArgs = lexer.lex();
+
+            Map<String, String> parsedArgs = new HashMap<>();
+            Parser<String> parser = new StringParser();
+
+            if (lexedArgs.isEmpty()) {
+                parsedArgs.put("message", "Echo, echo, echo!");
+            } else {
+                lexedArgs.forEach( (k,v) -> {
+                    try {
+                        parsedArgs.put("message", parser.parse(v));
+                    } catch (java.text.ParseException e) {
+                        throw new ParseException(e.getMessage());
+                    }
+                });
+            }
+
+            return new Result.Success<>(new HashMap<>(parsedArgs));
+
+        } catch (ParseException e) {
+            return new Result.Failure<>(e.toString());
+        }
     }
 
     private static Result<Map<String, Object>> search(String arguments) {
-        throw new UnsupportedOperationException("TODO"); //TODO
+
+        try {
+            Lexer lexer = new Lexer(arguments);
+            var lexedArgs = lexer.lex();
+
+            if (lexedArgs.isEmpty() || lexedArgs.size() > 2) {
+                throw new ParseException("Invalid number of arguments, should be 1 or 2 but found: " + lexedArgs.size());
+            } else if (lexedArgs.size() == 2 && !lexedArgs.containsKey("case-insensitive")) {
+                throw new ParseException("Extraneous argument" + lexedArgs.get("1"));
+            }
+
+            Map<String, Object> parsedArgs = new HashMap<>();
+            Parser<String> stringParser = new StringParser();
+
+            parsedArgs.put("case-insensitive", false);
+
+            lexedArgs.forEach( (k,v) -> {
+               try {
+                   if (k.equals("case-insensitive")) {
+                       Parser<Boolean> booleanParser = new BooleanParser();
+                       parsedArgs.put("case-insensitive", booleanParser.parse(v));
+                   } else {
+
+                       parsedArgs.put("term", stringParser.parse(v));
+                   }
+
+               } catch (ParseException | java.text.ParseException e) {
+                   throw new ParseException(e.getMessage());
+               }
+            });
+
+            return new Result.Success<>(new HashMap<>(parsedArgs));
+
+        } catch (ParseException e) {
+            return new Result.Failure<>(e.toString());
+        }
     }
 
     private static Result<Map<String, Object>> weekday(String arguments) {
-        throw new UnsupportedOperationException("TODO"); //TODO
+
+        try {
+            Lexer lexer = new Lexer(arguments);
+            var lexedArgs = lexer.lex();
+
+            if (lexedArgs.size() != 1) {
+                throw new LocalDateException("Invalid number of arguments, should be 1 but found: " + lexedArgs.size());
+            }
+
+            Map<String, Object> parsedArgs = new HashMap<>();
+            LocalDateParser parser = new LocalDateParser();
+
+            parsedArgs.put("date", parser.parse(lexedArgs.get("0")));
+
+            return new Result.Success<>(new HashMap<>(parsedArgs));
+
+        } catch (ParseException | LocalDateException e) {
+            return new Result.Failure<>(e.toString());
+        }
     }
 
 }
