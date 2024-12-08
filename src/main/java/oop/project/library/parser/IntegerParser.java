@@ -10,6 +10,19 @@ public class IntegerParser implements Parser<Integer> {
         } catch (NumberFormatException e) {
             throw new ParseException(e.getMessage());
         }
-
     }
+
+    public static Parser<Integer> withRange(int min, int max) {
+            return new IntegerParser().withConstraint(value -> {
+                try {
+                    if (value < min || value > max) {
+                        throw new IllegalArgumentException("Value " + value + " is out of range, must be between " + min + " and " + max + " (inclusive)");
+                    }
+                return value;
+                } catch (IllegalArgumentException e) {
+                    throw new ParseException(e.getMessage());
+                }
+            });
+    }
+
 }

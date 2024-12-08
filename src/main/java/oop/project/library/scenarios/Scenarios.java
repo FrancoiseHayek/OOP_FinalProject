@@ -1,12 +1,11 @@
 package oop.project.library.scenarios;
 
+import oop.project.library.command.*;
 import oop.project.library.lexer.Lexer;
 import oop.project.library.parser.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static oop.project.library.parser.Parser.useParser;
 
 public class Scenarios {
 
@@ -36,7 +35,16 @@ public class Scenarios {
 
         try {
             Lexer lexer = new Lexer(arguments);
-            var lexedArgs = lexer.lex();
+            lexer.lex();
+
+            Map<String, Object> lexedArgs = new HashMap<>();
+
+            lexer.getPositional().forEach(arg -> {
+                lexedArgs.put("0", arg);
+            });
+
+            lexedArgs.putAll(lexer.getNamed());
+            
             return new Result.Success<>(new HashMap<>(lexedArgs));
         } catch (UnsupportedOperationException e) {
             return new Result.Failure<>(e.toString());
@@ -46,21 +54,13 @@ public class Scenarios {
     private static Result<Map<String, Object>> add(String arguments) {
 
         try {
-            Lexer lexer = new Lexer(arguments);
-            var lexedArgs = lexer.lex();
 
-            if (lexedArgs.size() != 2) {
-                throw new ParseException("Invalid number of arguments, should be 2 but found: " + lexedArgs.size());
-            }
-
-            Map<String, Integer> parsedArgs = new HashMap<>();
-            Parser<Integer> parser = new IntegerParser();
-            parsedArgs.put("left", parser.parse(lexedArgs.get("0")));
-            parsedArgs.put("right", parser.parse(lexedArgs.get("1")));
+            Command add = new AddCommand();
+            var parsedArgs = add.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
-        } catch (ParseException | java.text.ParseException e) {
+        } catch (CommandException e) {
             return new Result.Failure<>(e.toString());
         }
     }
@@ -68,22 +68,13 @@ public class Scenarios {
     private static Result<Map<String, Object>> sub(String arguments) {
 
         try {
-            Lexer lexer = new Lexer(arguments);
-            var lexedArgs = lexer.lex();
 
-            if (lexedArgs.size() != 2) {
-                throw new ParseException("Invalid number of arguments, should be 2 but found: " + lexedArgs.size());
-            }
-
-            Map<String, Double> parsedArgs = new HashMap<>();
-            Parser<Double> parser = new DoubleParser();
-
-            parsedArgs.put("left", parser.parse(lexedArgs.get("left")));
-            parsedArgs.put("right", parser.parse(lexedArgs.get("right")));
+            Command sub = new SubCommand();
+            var parsedArgs = sub.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
-        } catch (ParseException | java.text.ParseException e) {
+        } catch (ParseException e) {
             return new Result.Failure<>(e.toString());
         }
     }
@@ -97,26 +88,13 @@ public class Scenarios {
         //if (number < 1 || number > 100) ...
 
         try {
-            Lexer lexer = new Lexer(arguments);
-            var lexedArgs = lexer.lex();
 
-            if (lexedArgs.size() != 1) {
-                throw new ParseException("Invalid number of arguments, should be 1 but found: " + lexedArgs.size());
-            }
-
-            Map<String, Integer> parsedArgs = new HashMap<>();
-            Parser<Integer> parser = new IntegerParser();
-
-            parsedArgs.put("number", parser.parse(lexedArgs.get("0")));
-
-            var number = parsedArgs.get("number");
-            if (number < 1 || number > 100) {
-                throw new ParseException("Number must be between 1 and 100 (inclusive) but found: " + number);
-            }
+            Command fizzBuzz = new FizzBuzzCommand();
+            var parsedArgs = fizzBuzz.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
-        } catch (ParseException | java.text.ParseException e) {
+        } catch (CommandException e) {
             return new Result.Failure<>(e.toString());
         }
     }
@@ -124,26 +102,13 @@ public class Scenarios {
     private static Result<Map<String, Object>> difficulty(String arguments) {
 
         try {
-            Lexer lexer = new Lexer(arguments);
-            var lexedArgs = lexer.lex();
 
-            if (lexedArgs.size() != 1) {
-                throw new ParseException("Invalid number of arguments, should be 1 but found: " + lexedArgs.size());
-            }
+            Command difficulty = new DifficultyCommand();
+            var parsedArgs = difficulty.parse(arguments);
 
-            Map<String, String> parsedArgs = new HashMap<>();
-            Parser<String> parser = new StringParser();
+            return new Result.Success<>(new HashMap<>(parsedArgs));
 
-            parsedArgs.put("difficulty", parser.parse(lexedArgs.get("0")));
-
-            String difficulty = parsedArgs.get("difficulty");
-
-            return switch (difficulty) {
-                case "easy", "normal", "hard", "peaceful" -> new Result.Success<>(new HashMap<>(parsedArgs));
-                default -> throw new ParseException("Invalid difficulty: " + difficulty);
-            };
-
-        } catch (ParseException | java.text.ParseException e) {
+        } catch (CommandException e) {
             return new Result.Failure<>(e.toString());
         }
     }
@@ -151,27 +116,13 @@ public class Scenarios {
     private static Result<Map<String, Object>> echo(String arguments) {
 
         try {
-            Lexer lexer = new Lexer(arguments);
-            var lexedArgs = lexer.lex();
 
-            Map<String, String> parsedArgs = new HashMap<>();
-            Parser<String> parser = new StringParser();
-
-            if (lexedArgs.isEmpty()) {
-                parsedArgs.put("message", "Echo, echo, echo!");
-            } else {
-                lexedArgs.forEach( (k,v) -> {
-                    try {
-                        parsedArgs.put("message", parser.parse(v));
-                    } catch (java.text.ParseException e) {
-                        throw new ParseException(e.getMessage());
-                    }
-                });
-            }
+            Command echoCommand = new EchoCommand();
+            var parsedArgs = echoCommand.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
-        } catch (ParseException e) {
+        } catch (CommandException e) {
             return new Result.Failure<>(e.toString());
         }
     }
@@ -179,38 +130,13 @@ public class Scenarios {
     private static Result<Map<String, Object>> search(String arguments) {
 
         try {
-            Lexer lexer = new Lexer(arguments);
-            var lexedArgs = lexer.lex();
 
-            if (lexedArgs.isEmpty() || lexedArgs.size() > 2) {
-                throw new ParseException("Invalid number of arguments, should be 1 or 2 but found: " + lexedArgs.size());
-            } else if (lexedArgs.size() == 2 && !lexedArgs.containsKey("case-insensitive")) {
-                throw new ParseException("Extraneous argument" + lexedArgs.get("1"));
-            }
-
-            Map<String, Object> parsedArgs = new HashMap<>();
-            Parser<String> stringParser = new StringParser();
-
-            parsedArgs.put("case-insensitive", false);
-
-            lexedArgs.forEach( (k,v) -> {
-               try {
-                   if (k.equals("case-insensitive")) {
-                       Parser<Boolean> booleanParser = new BooleanParser();
-                       parsedArgs.put("case-insensitive", booleanParser.parse(v));
-                   } else {
-
-                       parsedArgs.put("term", stringParser.parse(v));
-                   }
-
-               } catch (ParseException | java.text.ParseException e) {
-                   throw new ParseException(e.getMessage());
-               }
-            });
+            Command search = new SearchCommand();
+            var parsedArgs = search.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
-        } catch (ParseException e) {
+        } catch (CommandException e) {
             return new Result.Failure<>(e.toString());
         }
     }
@@ -218,21 +144,13 @@ public class Scenarios {
     private static Result<Map<String, Object>> weekday(String arguments) {
 
         try {
-            Lexer lexer = new Lexer(arguments);
-            var lexedArgs = lexer.lex();
 
-            if (lexedArgs.size() != 1) {
-                throw new LocalDateException("Invalid number of arguments, should be 1 but found: " + lexedArgs.size());
-            }
-
-            Map<String, Object> parsedArgs = new HashMap<>();
-            LocalDateParser parser = new LocalDateParser();
-
-            parsedArgs.put("date", parser.parse(lexedArgs.get("0")));
+            Command localDate = new LocalDateCommand();
+            var parsedArgs = localDate.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
-        } catch (ParseException | LocalDateException e) {
+        } catch (CommandException e) {
             return new Result.Failure<>(e.toString());
         }
     }

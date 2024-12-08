@@ -5,6 +5,16 @@ import java.util.*;
 public final class Lexer {
 
     private final CharStream chars;
+    List<String> positional = new ArrayList<>();
+    Map<String, String> named = new HashMap<>();
+
+    public List<String> getPositional() {
+        return positional;
+    }
+
+    public Map<String, String> getNamed() {
+        return named;
+    }
 
     public Lexer(String input) {
         chars = new CharStream(input);
@@ -47,13 +57,13 @@ public final class Lexer {
             }
 
             if (token.getName().isPresent()) {
-                lexedArgs.put(token.getName().get(), token.getLiteral());
+                named.put(token.getName().get(), token.getLiteral());
             } else {
-                lexedArgs.put(String.valueOf(i), token.getLiteral());
+                positional.add(token.getLiteral());
             }
         }
 
-        return lexedArgs;
+        return null;
     }
 
     public Token lexToken() {
