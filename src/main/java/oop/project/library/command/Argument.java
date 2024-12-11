@@ -9,14 +9,14 @@ import java.util.Optional;
 
 public record Argument (
         Optional<String> name,
-        String value,
+        Optional<?> value,
         Parser<?> parser,
         boolean optional
 ) {
 
     public Object parse() throws CommandException {
         try {
-            return parser.parse(value);
+            return parser.parse((String) value.get());
         } catch (ParseException e) {
             throw new CommandException(e.getMessage());
         }

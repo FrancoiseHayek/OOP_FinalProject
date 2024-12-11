@@ -3,9 +3,12 @@ package oop.project.library.scenarios;
 import oop.project.library.command.*;
 import oop.project.library.lexer.Lexer;
 import oop.project.library.parser.*;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.List;
 
 public class Scenarios {
 
@@ -27,6 +30,7 @@ public class Scenarios {
             case "echo" -> echo(arguments);
             case "search" -> search(arguments);
             case "weekday" -> weekday(arguments);
+            case "distance" -> distance(arguments);
             default -> throw new AssertionError("Undefined command " + base + ".");
         };
     }
@@ -44,7 +48,7 @@ public class Scenarios {
             });
 
             lexedArgs.putAll(lexer.getNamed());
-            
+
             return new Result.Success<>(new HashMap<>(lexedArgs));
         } catch (UnsupportedOperationException e) {
             return new Result.Failure<>(e.toString());
@@ -55,7 +59,16 @@ public class Scenarios {
 
         try {
 
-            Command add = new AddCommand();
+            Parser<Integer> parser = new IntegerParser();
+            Argument left = new Argument(Optional.of("left"), Optional.empty(), parser, false);
+            Argument right = new Argument(Optional.of("right"), Optional.empty(), parser, false);
+
+            CustomCommand add = new CustomCommand.Builder()
+                    .withMaxPositionalArgs(2)
+                    .withMaxNamedArgs(0)
+                    .withRequiredPositionalArgs(List.of(left, right))
+                    .build();
+
             var parsedArgs = add.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
@@ -69,7 +82,15 @@ public class Scenarios {
 
         try {
 
-            Command sub = new SubCommand();
+            Parser<Double> parser = new DoubleParser();
+            Argument left = new Argument(Optional.of("left"), Optional.empty(), parser, false);
+            Argument right = new Argument(Optional.of("right"), Optional.empty(), parser, false);
+            CustomCommand sub = new CustomCommand.Builder()
+                    .withMaxPositionalArgs(0)
+                    .withMaxNamedArgs(2)
+                    .withRequiredNamedArgs(Map.of(left.name().orElse(""), left, right.name().orElse(""), right))
+                    .build();
+
             var parsedArgs = sub.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
@@ -89,7 +110,15 @@ public class Scenarios {
 
         try {
 
-            Command fizzBuzz = new FizzBuzzCommand();
+            Parser<Integer> parser = IntegerParser.withRange(1, 100);
+            Argument value = new Argument(Optional.of("number"), Optional.empty(), parser, false);
+
+            CustomCommand fizzBuzz = new CustomCommand.Builder()
+                    .withMaxNamedArgs(0)
+                    .withMaxPositionalArgs(1)
+                    .withRequiredPositionalArgs(List.of(value))
+                    .build();
+
             var parsedArgs = fizzBuzz.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
@@ -103,8 +132,16 @@ public class Scenarios {
 
         try {
 
-            Command difficulty = new DifficultyCommand();
-            var parsedArgs = difficulty.parse(arguments);
+            Parser<String> parser = StringParser.withChoices(Difficulty.class);
+            Argument difficulty = new Argument(Optional.of("difficulty"), Optional.empty(), parser, false);
+
+            CustomCommand mode = new CustomCommand.Builder()
+                    .withMaxNamedArgs(0)
+                    .withMaxPositionalArgs(1)
+                    .withRequiredPositionalArgs(List.of(difficulty))
+                    .build();
+
+            var parsedArgs = mode.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
@@ -117,8 +154,16 @@ public class Scenarios {
 
         try {
 
-            Command echoCommand = new EchoCommand();
-            var parsedArgs = echoCommand.parse(arguments);
+            Parser<String> parser = new StringParser();
+            Argument message = new Argument(Optional.of("message"), Optional.of("Echo, echo, echo!"), parser, true);
+
+            CustomCommand echo = new CustomCommand.Builder()
+                    .withMaxNamedArgs(0)
+                    .withMaxPositionalArgs(1)
+                    .withRequiredPositionalArgs(List.of(message))
+                    .build();
+
+            var parsedArgs = echo.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
@@ -131,7 +176,18 @@ public class Scenarios {
 
         try {
 
-            Command search = new SearchCommand();
+            Parser<String> stringParser = new StringParser();
+            Parser<Boolean> booleanParser = new BooleanParser();
+            Argument term = new Argument(Optional.of("term"), Optional.empty(), stringParser, false);
+            Argument caseInsensitive = new Argument(Optional.of("case-insensitive"), Optional.of("false"), booleanParser, true);
+
+            CustomCommand search = new CustomCommand.Builder()
+                    .withMaxNamedArgs(1)
+                    .withMaxPositionalArgs(1)
+                    .withRequiredNamedArgs(Map.of("case-insensitive", caseInsensitive))
+                    .withRequiredPositionalArgs(List.of(term))
+                    .build();
+
             var parsedArgs = search.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
@@ -145,7 +201,15 @@ public class Scenarios {
 
         try {
 
-            Command localDate = new LocalDateCommand();
+            Parser<?> parser = new LocalDateParser();
+            Argument date = new Argument(Optional.of("date"), Optional.empty(), parser, false);
+
+            CustomCommand localDate = new CustomCommand.Builder()
+                    .withMaxNamedArgs(0)
+                    .withMaxPositionalArgs(1)
+                    .withRequiredPositionalArgs(List.of(date))
+                    .build();
+
             var parsedArgs = localDate.parse(arguments);
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
@@ -153,6 +217,30 @@ public class Scenarios {
         } catch (CommandException e) {
             return new Result.Failure<>(e.toString());
         }
+    }
+
+    private static Result<Map<String, Object>> distance(String arguments) {
+
+        try {
+
+            Parser<Integer> parser = new IntegerParser();
+            Argument x = new Argument(Optional.of("x"), Optional.of("0"), parser, true);
+            Argument y = new Argument(Optional.of("y"), Optional.of("0"), parser, true);
+
+            CustomCommand distance = new CustomCommand.Builder()
+                    .withRequiredNamedArgs(Map.of("x", x, "y", y))
+                    .withMaxPositionalArgs(0)
+                    .withMaxNamedArgs(2)
+                    .build();
+
+            var parsedArgs = distance.parse(arguments);
+
+            return new Result.Success<>(new HashMap<>(parsedArgs));
+
+        } catch (CommandException e) {
+            return new Result.Failure<>(e.toString());
+        }
+
     }
 
 }

@@ -30,7 +30,7 @@ public class LocalDateCommand implements Command {
         List<Argument> argumentList = new ArrayList<>();
 
         lexer.getPositional().forEach(arg -> {
-            argumentList.add(new Argument(Optional.empty(), arg, parser, false));
+            argumentList.add(new Argument(Optional.empty(), Optional.of(arg), parser, false));
         });
 
         argumentList.forEach(arg -> {

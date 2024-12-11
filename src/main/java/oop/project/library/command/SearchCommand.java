@@ -33,14 +33,14 @@ public class SearchCommand implements Command {
         Parser<Boolean> booleanParser = new BooleanParser();
 
         lexer.getPositional().forEach(arg -> {
-            argumentList.add(new Argument(Optional.empty(), arg, stringParser, false));
+            argumentList.add(new Argument(Optional.empty(), Optional.of(arg), stringParser, false));
         });
 
         lexer.getNamed().forEach( (k, v) -> {
             if (!Objects.equals(k, "case-insensitive")) {
                 throw new CommandException("Argument " + k + " not allowed");
             }
-            argumentMap.put(k, new Argument(Optional.of(k), v, booleanParser, true));
+            argumentMap.put(k, new Argument(Optional.of(k), Optional.of(v), booleanParser, true));
         });
 
         Map<String, Object> parsedArgs = new HashMap<>();

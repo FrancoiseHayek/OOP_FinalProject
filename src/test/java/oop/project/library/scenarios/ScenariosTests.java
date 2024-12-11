@@ -189,6 +189,29 @@ class ScenariosTests {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource
+    public void testDistance(String name, String command, Map<String, Object> expected) {
+        test(command, expected);
+    }
+
+    private static Stream<Arguments> testDistance() {
+        return Stream.of(
+                Arguments.of("Defaults", """
+                distance
+                """, Map.of("x", 0, "y", 0)),
+                Arguments.of("No Y", """
+                distance --x 2
+                """, Map.of("x", 2, "y", 0)),
+                Arguments.of("No X", """
+                distance --y -3
+                """, Map.of("x", 0, "y", -3)),
+                Arguments.of("Invalid", """
+                distance 3
+                """, null)
+        );
+    }
+
     private static void test(String command, Map<String, Object> expected) {
         var result = Scenarios.parse(command.stripTrailing()); //trailing newline
         if (expected != null) {

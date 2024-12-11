@@ -28,7 +28,7 @@ public class AddCommand implements Command {
         Parser<Integer> parser = new IntegerParser();
 
         rawPositional.forEach(arg -> {
-            argumentList.add(new Argument(Optional.empty(), arg, parser, false));
+            argumentList.add(new Argument(Optional.empty(), Optional.of(arg), parser, false));
         });
 
         Map<String, Object> parsedArgs = new HashMap<>();

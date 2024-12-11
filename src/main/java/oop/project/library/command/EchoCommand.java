@@ -24,7 +24,7 @@ public class EchoCommand implements Command {
         Parser<String> parser = new StringParser();
 
         rawPositional.forEach(arg -> {
-            argumentList.add(new Argument(Optional.empty(), arg, parser, false));
+            argumentList.add(new Argument(Optional.empty(), Optional.of(arg), parser, false));
         });
 
         Map<String, Object> parsedArgs = new HashMap<>();

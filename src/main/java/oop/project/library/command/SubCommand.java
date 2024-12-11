@@ -38,7 +38,7 @@ public class SubCommand implements Command {
         Parser<Double> parser = new DoubleParser();
 
         rawNamed.forEach( (k, v) -> {
-            argumentsMap.put(k, new Argument(Optional.of(k), v, parser, false));
+            argumentsMap.put(k, new Argument(Optional.of(k), Optional.of(v), parser, false));
         });
 
         Map<String, Object> parsedArgs = new HashMap<>();

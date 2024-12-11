@@ -1,5 +1,6 @@
 package oop.project.library.scenarios;
 
+import oop.project.library.parser.ParseException;
 import oop.project.library.parser.Parser;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ public class LocalDateParser implements Parser<LocalDate> {
         try {
             return LocalDate.parse(input);
         } catch (DateTimeParseException e) {
-            throw new LocalDateException(e.getMessage());
+            throw new ParseException(e.getMessage());
         }
 
     }
