@@ -101,6 +101,7 @@ public class CustomCommand {
     }
 
     private CustomCommand(Builder builder) {
+        String commandName = builder.commandName;
         this.requiredPositionalArgs = builder.requiredPositionalArgs;
         this.requiredNamedArgs = builder.requiredNamedArgs;
         this.maxPositionalArgs = builder.maxPositionalArgs;
@@ -108,10 +109,16 @@ public class CustomCommand {
     }
 
     public static class Builder {
+        private String commandName = null;
         private List<Argument> requiredPositionalArgs = new ArrayList<>();
         private Map<String, Argument> requiredNamedArgs = new HashMap<>();
         private int maxPositionalArgs = 0;
         private int maxNamedArgs = 0;
+
+        public Builder withName(String name) {
+            this.commandName = name;
+            return this;
+        }
 
         public Builder withRequiredPositionalArgs(List<Argument> requiredPositionalArgs) {
             this.requiredPositionalArgs = requiredPositionalArgs;

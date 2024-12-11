@@ -64,6 +64,7 @@ public class Scenarios {
             Argument right = new Argument(Optional.of("right"), Optional.empty(), parser, false);
 
             CustomCommand add = new CustomCommand.Builder()
+                    .withName("add")
                     .withMaxPositionalArgs(2)
                     .withMaxNamedArgs(0)
                     .withRequiredPositionalArgs(List.of(left, right))
@@ -86,6 +87,7 @@ public class Scenarios {
             Argument left = new Argument(Optional.of("left"), Optional.empty(), parser, false);
             Argument right = new Argument(Optional.of("right"), Optional.empty(), parser, false);
             CustomCommand sub = new CustomCommand.Builder()
+                    .withName("sub")
                     .withMaxPositionalArgs(0)
                     .withMaxNamedArgs(2)
                     .withRequiredNamedArgs(Map.of(left.name().orElse(""), left, right.name().orElse(""), right))
@@ -114,6 +116,7 @@ public class Scenarios {
             Argument value = new Argument(Optional.of("number"), Optional.empty(), parser, false);
 
             CustomCommand fizzBuzz = new CustomCommand.Builder()
+                    .withName("fizzbuzz")
                     .withMaxNamedArgs(0)
                     .withMaxPositionalArgs(1)
                     .withRequiredPositionalArgs(List.of(value))
@@ -136,6 +139,7 @@ public class Scenarios {
             Argument difficulty = new Argument(Optional.of("difficulty"), Optional.empty(), parser, false);
 
             CustomCommand mode = new CustomCommand.Builder()
+                    .withName("mode")
                     .withMaxNamedArgs(0)
                     .withMaxPositionalArgs(1)
                     .withRequiredPositionalArgs(List.of(difficulty))
@@ -158,6 +162,7 @@ public class Scenarios {
             Argument message = new Argument(Optional.of("message"), Optional.of("Echo, echo, echo!"), parser, true);
 
             CustomCommand echo = new CustomCommand.Builder()
+                    .withName("echo")
                     .withMaxNamedArgs(0)
                     .withMaxPositionalArgs(1)
                     .withRequiredPositionalArgs(List.of(message))
@@ -182,6 +187,7 @@ public class Scenarios {
             Argument caseInsensitive = new Argument(Optional.of("case-insensitive"), Optional.of("false"), booleanParser, true);
 
             CustomCommand search = new CustomCommand.Builder()
+                    .withName("search")
                     .withMaxNamedArgs(1)
                     .withMaxPositionalArgs(1)
                     .withRequiredNamedArgs(Map.of("case-insensitive", caseInsensitive))
@@ -205,6 +211,7 @@ public class Scenarios {
             Argument date = new Argument(Optional.of("date"), Optional.empty(), parser, false);
 
             CustomCommand localDate = new CustomCommand.Builder()
+                    .withName("localDate")
                     .withMaxNamedArgs(0)
                     .withMaxPositionalArgs(1)
                     .withRequiredPositionalArgs(List.of(date))
@@ -228,6 +235,7 @@ public class Scenarios {
             Argument y = new Argument(Optional.of("y"), Optional.of("0"), parser, true);
 
             CustomCommand distance = new CustomCommand.Builder()
+                    .withName("distance")
                     .withRequiredNamedArgs(Map.of("x", x, "y", y))
                     .withMaxPositionalArgs(0)
                     .withMaxNamedArgs(2)
