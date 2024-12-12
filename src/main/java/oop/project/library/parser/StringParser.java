@@ -1,19 +1,14 @@
 package oop.project.library.parser;
 
-import java.util.EnumSet;
+
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class StringParser implements Parser<String> {
 
     @Override
     public String parse(String input) { return input; }
 
-    public static <E extends Enum<E>> Parser<String> withChoices(Class<E> enumType) {
-        Set<String> validValues =
-                EnumSet.allOf(enumType).stream()
-                        .map(Enum::name)
-                        .collect(Collectors.toSet());
+    public static <E extends Enum<E>> Parser<String> withChoices(Set<String> validValues) {
 
         return new StringParser().withConstraint(value -> {
             try {

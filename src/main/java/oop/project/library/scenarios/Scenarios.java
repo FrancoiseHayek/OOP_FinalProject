@@ -3,12 +3,12 @@ package oop.project.library.scenarios;
 import oop.project.library.command.*;
 import oop.project.library.lexer.Lexer;
 import oop.project.library.parser.*;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.List;
+import java.util.Set;
 
 public class Scenarios {
 
@@ -63,7 +63,7 @@ public class Scenarios {
             Argument left = new Argument(Optional.of("left"), Optional.empty(), parser, false);
             Argument right = new Argument(Optional.of("right"), Optional.empty(), parser, false);
 
-            CustomCommand add = new CustomCommand.Builder()
+            Command add = new Command.Builder()
                     .withName("add")
                     .withMaxPositionalArgs(2)
                     .withMaxNamedArgs(0)
@@ -86,7 +86,7 @@ public class Scenarios {
             Parser<Double> parser = new DoubleParser();
             Argument left = new Argument(Optional.of("left"), Optional.empty(), parser, false);
             Argument right = new Argument(Optional.of("right"), Optional.empty(), parser, false);
-            CustomCommand sub = new CustomCommand.Builder()
+            Command sub = new Command.Builder()
                     .withName("sub")
                     .withMaxPositionalArgs(0)
                     .withMaxNamedArgs(2)
@@ -115,7 +115,7 @@ public class Scenarios {
             Parser<Integer> parser = IntegerParser.withRange(1, 100);
             Argument value = new Argument(Optional.of("number"), Optional.empty(), parser, false);
 
-            CustomCommand fizzBuzz = new CustomCommand.Builder()
+            Command fizzBuzz = new Command.Builder()
                     .withName("fizzbuzz")
                     .withMaxNamedArgs(0)
                     .withMaxPositionalArgs(1)
@@ -135,10 +135,10 @@ public class Scenarios {
 
         try {
 
-            Parser<String> parser = StringParser.withChoices(Difficulty.class);
+            Parser<String> parser = StringParser.withChoices(Set.of("easy", "normal", "hard", "peaceful"));
             Argument difficulty = new Argument(Optional.of("difficulty"), Optional.empty(), parser, false);
 
-            CustomCommand mode = new CustomCommand.Builder()
+            Command mode = new Command.Builder()
                     .withName("mode")
                     .withMaxNamedArgs(0)
                     .withMaxPositionalArgs(1)
@@ -161,7 +161,7 @@ public class Scenarios {
             Parser<String> parser = new StringParser();
             Argument message = new Argument(Optional.of("message"), Optional.of("Echo, echo, echo!"), parser, true);
 
-            CustomCommand echo = new CustomCommand.Builder()
+            Command echo = new Command.Builder()
                     .withName("echo")
                     .withMaxNamedArgs(0)
                     .withMaxPositionalArgs(1)
@@ -186,7 +186,7 @@ public class Scenarios {
             Argument term = new Argument(Optional.of("term"), Optional.empty(), stringParser, false);
             Argument caseInsensitive = new Argument(Optional.of("case-insensitive"), Optional.of("false"), booleanParser, true);
 
-            CustomCommand search = new CustomCommand.Builder()
+            Command search = new Command.Builder()
                     .withName("search")
                     .withMaxNamedArgs(1)
                     .withMaxPositionalArgs(1)
@@ -210,7 +210,7 @@ public class Scenarios {
             Parser<?> parser = new LocalDateParser();
             Argument date = new Argument(Optional.of("date"), Optional.empty(), parser, false);
 
-            CustomCommand localDate = new CustomCommand.Builder()
+            Command localDate = new Command.Builder()
                     .withName("localDate")
                     .withMaxNamedArgs(0)
                     .withMaxPositionalArgs(1)
@@ -234,7 +234,7 @@ public class Scenarios {
             Argument x = new Argument(Optional.of("x"), Optional.of("0"), parser, true);
             Argument y = new Argument(Optional.of("y"), Optional.of("0"), parser, true);
 
-            CustomCommand distance = new CustomCommand.Builder()
+            Command distance = new Command.Builder()
                     .withName("distance")
                     .withRequiredNamedArgs(Map.of("x", x, "y", y))
                     .withMaxPositionalArgs(0)
