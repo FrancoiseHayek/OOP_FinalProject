@@ -2,6 +2,8 @@ package oop.project.library.parser;
 
 public class BooleanParser implements Parser<Boolean> {
 
+    /// Parses user input into a boolean
+    /// Throws a parse exception if input does not conform to standard Java boolean types
     @Override
     public Boolean parse(String input) {
 
