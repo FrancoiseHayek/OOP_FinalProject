@@ -31,6 +31,8 @@ public class Scenarios {
             case "search" -> search(arguments);
             case "weekday" -> weekday(arguments);
             case "distance" -> distance(arguments);
+            case "typeExtraction" -> typeExtraction(arguments);
+            case "misusingCommandBuilder" -> misusingCommandBuilder(arguments);
             default -> throw new AssertionError("Undefined command " + base + ".");
         };
     }
@@ -246,6 +248,62 @@ public class Scenarios {
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
         } catch (CommandException e) {
+            return new Result.Failure<>(e.toString());
+        }
+
+    }
+
+    private static Result<Map<String, Object>> typeExtraction(String arguments) {
+
+        try {
+
+            Parser<Integer> parser = new IntegerParser();
+            Argument x = new Argument(Optional.of("x"), Optional.of("0"), parser, true);
+            Argument y = new Argument(Optional.of("y"), Optional.of("0"), parser, true);
+
+            Command test = new Command.Builder()
+                    .withName("test")
+                    .withRequiredNamedArgs(Map.of("x", x, "y", y))
+                    .withMaxPositionalArgs(0)
+                    .withMaxNamedArgs(2)
+                    .build();
+
+            var parsedArgs = test.parse(arguments);
+
+            int parsedX = (int) parsedArgs.get("x");
+            int parsedY = (int) parsedArgs.get("y");
+
+            var addition = parsedX + parsedY;
+            parsedArgs.put("result", addition);
+
+            return new Result.Success<>(parsedArgs);
+
+        } catch (CommandException e) {
+            return new Result.Failure<>(e.toString());
+        }
+
+    }
+
+    private static Result<Map<String, Object>> misusingCommandBuilder(String arguments) {
+
+        try {
+
+            Parser<Integer> parser = new IntegerParser();
+            Argument x = new Argument(Optional.of("x"), Optional.of("0"), parser, true);
+            Argument y = new Argument(Optional.of("y"), Optional.of("0"), parser, true);
+
+            Command test = new Command.Builder()
+                    .withName("test")
+                    .withRequiredNamedArgs(Map.of("x", x, "y", y))
+                    .withMaxPositionalArgs(0)
+                    .withMaxNamedArgs(0) // ERROR!
+                    .build();
+
+            var parsedArgs = test.parse(arguments);
+
+            return new Result.Success<>(parsedArgs);
+
+        } catch (CommandException | CommandLibraryException e) {
             return new Result.Failure<>(e.toString());
         }
 

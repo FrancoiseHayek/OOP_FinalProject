@@ -212,6 +212,42 @@ class ScenariosTests {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource
+    public void testTypeExtraction(String name, String command, Map<String, Object> expected) {
+        test(command, expected);
+    }
+
+    private static Stream<Arguments> testTypeExtraction() {
+        return Stream.of(
+                Arguments.of("Test", """
+                typeExtraction
+                """, Map.of("x", 0, "y", 0, "result", 0)),
+                Arguments.of("Add 1 and 2", """
+                typeExtraction --x 1 --y 2
+                """, Map.of("x", 1, "y", 2, "result", 3))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    public void testMisusingCommandBuilder(String name, String command, Map<String, Object> expected) {
+        test(command, expected);
+    }
+
+    private static Stream<Arguments> testMisusingCommandBuilder() {
+        return Stream.of(
+                Arguments.of("Test", """
+                misusingCommandBuilder
+                """, null),
+                Arguments.of("Test 2", """
+                misusingCommandBuilder 3
+                """, null)
+        );
+    }
+
+
+
     private static void test(String command, Map<String, Object> expected) {
         var result = Scenarios.parse(command.stripTrailing()); //trailing newline
         if (expected != null) {
