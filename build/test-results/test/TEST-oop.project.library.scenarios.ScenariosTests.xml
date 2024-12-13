@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="oop.project.library.scenarios.ScenariosTests" tests="34" skipped="0" failures="0" errors="0" timestamp="2024-12-12T21:49:44" hostname="DESKTOP-42A8273" time="0.534">
+<testsuite name="oop.project.library.scenarios.ScenariosTests" tests="34" skipped="0" failures="0" errors="0" timestamp="2024-12-13T01:05:25" hostname="DESKTOP-42A8273" time="0.466">
   <properties/>
-  <testcase name="[1] Positives, add 1 2&#10;, {right=2, left=1}" classname="oop.project.library.scenarios.ScenariosTests" time="0.09"/>
-  <testcase name="[2] Negatives, add -1 -2&#10;, {right=-2, left=-1}" classname="oop.project.library.scenarios.ScenariosTests" time="0.001"/>
-  <testcase name="[3] Zeros, add 0 0&#10;, {right=0, left=0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.001"/>
-  <testcase name="[4] Non-Numeric Left, add one 2&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.029"/>
-  <testcase name="[5] Non-Numeric Right, add 1 two&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
-  <testcase name="[6] Non-Integer Left, add 1.0 2&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.005"/>
-  <testcase name="[7] Non-Integer Right, add 1 2.0&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
-  <testcase name="[8] Missing Argument, add 1&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.019"/>
-  <testcase name="[9] Extraneous Argument, add 1 2 3&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.005"/>
-  <testcase name="[1] Literal, lex literal&#10;, {0=literal}" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
+  <testcase name="[1] Positives, add 1 2&#10;, {left=1, right=2}" classname="oop.project.library.scenarios.ScenariosTests" time="0.084"/>
+  <testcase name="[2] Negatives, add -1 -2&#10;, {left=-1, right=-2}" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
+  <testcase name="[3] Zeros, add 0 0&#10;, {left=0, right=0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
+  <testcase name="[4] Non-Numeric Left, add one 2&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.016"/>
+  <testcase name="[5] Non-Numeric Right, add 1 two&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
+  <testcase name="[6] Non-Integer Left, add 1.0 2&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.016"/>
+  <testcase name="[7] Non-Integer Right, add 1 2.0&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.005"/>
+  <testcase name="[8] Missing Argument, add 1&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.021"/>
+  <testcase name="[9] Extraneous Argument, add 1 2 3&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
+  <testcase name="[1] Literal, lex literal&#10;, {0=literal}" classname="oop.project.library.scenarios.ScenariosTests" time="0.009"/>
   <testcase name="[2] Integer, lex 1&#10;, {0=1}" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
-  <testcase name="[3] Negative Decimal, lex -2.0&#10;, {0=-2.0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
-  <testcase name="[4] Flag, lex --flag value&#10;, {flag=value}" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
-  <testcase name="[5] Flag Without Value, lex --flag&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.005"/>
-  <testcase name="[1] Positives, sub --left 1 --right 2.0&#10;, {right=2.0, left=1.0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
-  <testcase name="[2] Negative Integer, sub --left -1 --right 2.0&#10;, {right=2.0, left=-1.0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
-  <testcase name="[3] Negative Decimal, sub --left 1 --right -2.0&#10;, {right=-2.0, left=1.0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.001"/>
+  <testcase name="[3] Negative Decimal, lex -2.0&#10;, {0=-2.0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
+  <testcase name="[4] Flag, lex --flag value&#10;, {flag=value}" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
+  <testcase name="[5] Flag Without Value, lex --flag&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
+  <testcase name="[1] Positives, sub --left 1 --right 2.0&#10;, {left=1.0, right=2.0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
+  <testcase name="[2] Negative Integer, sub --left -1 --right 2.0&#10;, {left=-1.0, right=2.0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.007"/>
+  <testcase name="[3] Negative Decimal, sub --left 1 --right -2.0&#10;, {left=1.0, right=-2.0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
   <testcase name="[1] Default, echo&#10;, {message=Echo, echo, echo!}" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
-  <testcase name="[2] Message, echo message&#10;, {message=message}" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
-  <testcase name="[1] Valid, fizzbuzz 15&#10;, {number=15}" classname="oop.project.library.scenarios.ScenariosTests" time="0.008"/>
-  <testcase name="[2] Zero, fizzbuzz 0&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.028"/>
+  <testcase name="[2] Message, echo message&#10;, {message=message}" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
+  <testcase name="[1] Valid, fizzbuzz 15&#10;, {number=15}" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
+  <testcase name="[2] Zero, fizzbuzz 0&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
   <testcase name="[1] Valid, weekday 2024-10-23&#10;, {date=2024-10-23}" classname="oop.project.library.scenarios.ScenariosTests" time="0.017"/>
-  <testcase name="[2] Invalid Month, weekday 2024-23-10&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
-  <testcase name="[3] Leap Year, weekday 2024-02-29&#10;, {date=2024-02-29}" classname="oop.project.library.scenarios.ScenariosTests" time="0.005"/>
-  <testcase name="[4] Invalid, weekday tuesday&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
-  <testcase name="[1] Defaults, distance&#10;, {y=0, x=0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
-  <testcase name="[2] No Y, distance --x 2&#10;, {y=0, x=2}" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
-  <testcase name="[3] No X, distance --y -3&#10;, {y=-3, x=0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
-  <testcase name="[4] Invalid, distance 3&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
+  <testcase name="[2] Invalid Month, weekday 2024-23-10&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
+  <testcase name="[3] Leap Year, weekday 2024-02-29&#10;, {date=2024-02-29}" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
+  <testcase name="[4] Invalid, weekday tuesday&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
+  <testcase name="[1] Defaults, distance&#10;, {x=0, y=0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.006"/>
+  <testcase name="[2] No Y, distance --x 2&#10;, {x=2, y=0}" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
+  <testcase name="[3] No X, distance --y -3&#10;, {x=0, y=-3}" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
+  <testcase name="[4] Invalid, distance 3&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.007"/>
   <testcase name="[1] Easy, difficulty easy&#10;, {difficulty=easy}" classname="oop.project.library.scenarios.ScenariosTests" time="0.004"/>
-  <testcase name="[2] Hardcore, difficulty hardcore&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.02"/>
-  <testcase name="[1] Lowercase, search apple&#10;, {case-insensitive=false, term=apple}" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
-  <testcase name="[2] Case Insensitive, search ApPlE --case-insensitive true&#10;, {case-insensitive=true, term=ApPlE}" classname="oop.project.library.scenarios.ScenariosTests" time="0.009"/>
-  <testcase name="[3] Extraneous Argument, search apple pie&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.002"/>
+  <testcase name="[2] Hardcore, difficulty hardcore&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.007"/>
+  <testcase name="[1] Lowercase, search apple&#10;, {term=apple, case-insensitive=false}" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
+  <testcase name="[2] Case Insensitive, search ApPlE --case-insensitive true&#10;, {term=ApPlE, case-insensitive=true}" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
+  <testcase name="[3] Extraneous Argument, search apple pie&#10;, null" classname="oop.project.library.scenarios.ScenariosTests" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

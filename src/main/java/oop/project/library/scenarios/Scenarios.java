@@ -97,7 +97,7 @@ public class Scenarios {
 
             return new Result.Success<>(new HashMap<>(parsedArgs));
 
-        } catch (ParseException e) {
+        } catch (CommandException e) {
             return new Result.Failure<>(e.toString());
         }
     }
@@ -112,7 +112,7 @@ public class Scenarios {
 
         try {
 
-            Parser<Integer> parser = IntegerParser.withRange(1, 100);
+            Parser<Integer> parser = IntegerParser.withInclusiveRange(1, 100);
             Argument value = new Argument(Optional.of("number"), Optional.empty(), parser, false);
 
             Command fizzBuzz = new Command.Builder()
